@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { commentSchema } from "../schemas";
 import axios from "axios";
+
+
+import { commentSchema } from "../schemas";
+import { useAuth } from "../context/Auth";
 
 const initialValues = {
     comment : '',
@@ -10,27 +13,33 @@ const initialValues = {
 const Comments = ( props ) =>{
     const {id,  comment, commentCount} = props;
 
+    const auth = useAuth();
     const [comments] = useState(comment);
-    console.log(comments);
+
     const { values, errors,handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: initialValues,
         validationSchema: commentSchema,
         onSubmit: (async (data, action) => {
-            const token = localStorage.getItem('jwtToken');
-            const postComment = await axios.post('http://localhost:5000/postOperation/addComment',
-                {postID:id, commentCount:(commentCount+1),  comment: data.comment},
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'auth-token': token
-                    }
-            })
+            try{
+                const token = localStorage.getItem('jwtToken');
+                const postComment = await axios.post('http://localhost:5000/postOperation/addComment',
+                    {postID:id, commentCount:(commentCount+1),  comment: data.comment},
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'auth-token': token
+                        }
+                })
 
-            if(postComment){
-                alert("Done");
+                if(postComment){
+                    auth.successToast('Commented');
+                }
+
+                action.resetForm();
             }
-
-            action.resetForm();
+            catch(err){
+                console.log(err.message);
+            }
         })
     });
 

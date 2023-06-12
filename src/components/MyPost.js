@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import AddPost from "./AddPost";
 import axios from "axios";
+import Spinner from "./Spinner";
 
 const MyPost = () => {
 
     const [ component, setComponent] = useState(true);
     const [postData, setPostData] = useState([]);
+    const [spinner,setSpinner] = useState(true);
 
     const getData = async () =>{
+        setSpinner(true);
         const token = localStorage.getItem('jwtToken');
         const data = await axios.get('http://localhost:5000/postOperation/getMyPost', {headers: {
             'Content-Type': 'application/json',
@@ -16,6 +19,7 @@ const MyPost = () => {
         }});
 
         setPostData(data.data);
+        setSpinner(false);
         console.log(postData);
     }
 
@@ -30,7 +34,8 @@ const MyPost = () => {
     },[component]);
 
     return (
-        <div className="mx-4 mt-4">
+        <>
+        <div className="mx-4 my-4">
             {
                 component &&<button type="button" className="btn btn-outline-warning" onClick={handelClick}>
                     New Post   
@@ -44,11 +49,16 @@ const MyPost = () => {
                     Back
                 </button>
             }
+        </div>
+        <div className="mx-4 mt-4" style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
             {
-                component&& postData.map((element)=>{
+                spinner&&<Spinner size={true}/>
+            }
+            {
+                (!spinner)&&component&& postData.map((element)=>{
                     const {id,comments,commentCount,image,isPrivate, like,user,content} = element;
                     return(
-                        <Post id={id} comments={comments} commentCount={commentCount} image={image} isPrivate={isPrivate} content={content} like={like} user={user}/>
+                        <Post id={id} comments={comments} commentCount={commentCount} image={image} isPrivate={isPrivate} content={content} like={like} user={user} deleteButton={true}/>
                     );
                 
                 })
@@ -57,6 +67,7 @@ const MyPost = () => {
                 (!component)&&<AddPost setComponent = {setComponent} component={component}/>
             }
         </div>
+        </>
     );
 };
 

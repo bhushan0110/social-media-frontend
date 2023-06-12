@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import image from '../images/boy.png'
 import axios from "axios";
+
+import { useAuth } from "../context/Auth";
  
 const FriendComponent = ( props ) => {
+    const auth = useAuth();
     const {name, _id  ,isFriend, handelRefresh} = props;
     const [userName] = useState(name);
     const [id] = useState(_id);
@@ -18,7 +21,7 @@ const FriendComponent = ( props ) => {
 
             if(addFriend){
                 handelRefresh();
-                alert('Success');
+                auth.successToast('Friend Added');
             }
         }
         catch(err){
@@ -38,7 +41,7 @@ const FriendComponent = ( props ) => {
             })
 
             if(delFriend){
-                alert('deleted');
+                auth.infoToast('Friend Removed');
                 handelRefresh();
             }
         }

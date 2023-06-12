@@ -2,7 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 
+
 import { addPostSchema } from "../schemas";
+import { useAuth } from "../context/Auth";
 
 const initialValues = {
     description: '',
@@ -10,9 +12,8 @@ const initialValues = {
     file: null
 }
 
-const AddPost = ( props) => {
-
-    const {component, setComponent} = props;
+const AddPost = ( {component, setComponent}) => {
+    const auth = useAuth();
 
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
         initialValues: initialValues,
@@ -36,13 +37,15 @@ const AddPost = ( props) => {
                 if(response){
                     console.log(response);
                     console.log("success");
-                    alert('Completed');
+                    auth.successToast('Post Uploaded');
                     setComponent(!component);
                 }
                 action.resetForm();
             }
             catch(err){
                 console.log(err.message);
+                auth.errorToast(err.message);
+
             }
             
             

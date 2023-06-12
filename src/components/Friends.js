@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
-import FriendComponent from "./FriendComponent";
 import { useFormik } from "formik";
-import { searchFriendSchema } from "../schemas";
 import axios from "axios";
+
+import { searchFriendSchema } from "../schemas";
+import FriendComponent from "./FriendComponent";
+import { useAuth } from "../context/Auth";
+import Spinner from "./Spinner";
 
 const initialValues = {
     userName: ''
 };
 
 const Friends = () => {
+
+    const auth = useAuth();
+
     const [newFriends, setNewFriends] = useState([]);
     const [myFriends, setMyFriends] = useState([]);
     const [refresh,setRefresh] = useState(false);
     const [clicked,setClicked] = useState(false);
+    const [spinner1,setSpinner1] = useState(false);
+    const [spinner2,setSpinner2] = useState(false);
 
     const handelRefresh = () =>{
         const tmp = !refresh;
@@ -25,6 +33,7 @@ const Friends = () => {
         initialValues: initialValues,
         validationSchema: searchFriendSchema,
         onSubmit: (async (data, action)=> {
+            setSpinner1(true);
             const { userName } = data;
             const token = localStorage.getItem('jwtToken');
             const response = await axios.post('http://localhost:5000/friends/searchFriend',{userName},{
@@ -36,8 +45,10 @@ const Friends = () => {
 
             if(response){
                 setNewFriends(response.data);
+                setSpinner1(false);
+                auth.infoToast('Add new friends');
                 console.log(newFriends);
-                // alert('Done');
+                
             }
             setClicked(true);
             action.resetForm();
@@ -46,6 +57,7 @@ const Friends = () => {
 
     const getMyFriends= async ()=>{
         try{
+            setSpinner2(true);
             const token = localStorage.getItem('jwtToken');
             const data = await axios.get('http://localhost:5000/friends/getMyFriends',{
                 headers:{
@@ -56,6 +68,7 @@ const Friends = () => {
 
             if(data){
                 setMyFriends(data.data);
+                setSpinner2(false);
                 console.log(myFriends);
             }
         }   
@@ -87,10 +100,13 @@ const Friends = () => {
             
             <div className="my-5" style={{marginLeft:'3%'}}>
                 {
-                    newFriends.map((element)=>{
+                    (spinner1)&&<Spinner size={false}/>
+                }
+                {
+                    (!spinner1)&&newFriends.map((element)=>{
                         return(
                             <div key={element._id}>
-                                <FriendComponent name={element.name} _id={element._id} isFriend = {false} handelRefresh={handelRefresh}/>
+                                <FriendComponent name={element.name} _id={element._id} isFriend = {false} handelRefresh={handelRefresh} />
                             </div>
                         );
                     })
@@ -103,16 +119,19 @@ const Friends = () => {
             <div className="my-5" style={{marginLeft:'3%'}}>
                 <h5 style={{color:'#545B77'}}> Your Friends </h5>
                 {
+                    (spinner2)&&<Spinner size={false}/>
+                }
+                {
                     myFriends.map((element)=>{
                         return(
                             <div key={element._id}>
-                                <FriendComponent name={element.name} _id={element._id} isFriend = {true}/>
+                                <FriendComponent name={element.name} _id={element._id} isFriend = {true} />
                             </div>
                         );
                     })
                 }
                 {
-                    (myFriends.length==0) &&
+                    (!spinner2)&&(myFriends.length==0) &&
                     <p className="text-warning">Search for new friends</p>
                 }
             </div>

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+
 import Profile from "./Profile";
 import Friends from "./Friends";
 import Home from "./Home";
@@ -9,33 +11,36 @@ import Trending from "./Trending";
 const Dashboard = () => {
 
     const [component,setComponent] = useState(0);
+    
 
     return(
-            <div className="row" style={{width:'100%'}}>
-                <div className="col-md-3" style={{height: '100vh', alignContent:'center'}}>
-                    <div style={{padding:'10px'}}>
-                        <Profile component={component} setComponent={setComponent}/>
+            <>
+                <div className="row" style={{width:'100%'}}>
+                    <div className="col-md-3" style={{height: '100vh', alignContent:'center'}}>
+                        <div style={{padding:'10px'}}>
+                            <Profile component={component} setComponent={setComponent}/>
+                        </div>
                     </div>
-                </div>
-                <div className="col-md-9" style={{minHeight:'100vh',padding:'10px'}}>
-                    <div className="card shadow" style={{height: '100%'}}>
-                        <div>
-                            {
-                                (component===0)&&<Home/>
-                            }
-                            {
-                                (component===1)&&<MyPost/>
-                            }
-                            {
-                                (component===2)&&<Friends/>
-                            }
-                            {
-                                (component===3)&&<Trending/>
-                            }
+                    <div className="col-md-9" style={{minHeight:'100vh',padding:'10px'}}>
+                        <div className="card shadow" style={{height: '100%'}}>
+                            <div>
+                                {
+                                    (component===0)&&<Home />
+                                }
+                                {
+                                    (component===1)&&<MyPost />
+                                }
+                                {
+                                    (component===2)&&<Friends />
+                                }
+                                {
+                                    (component===3)&&<Trending />
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
     );
 };
 

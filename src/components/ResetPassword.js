@@ -19,7 +19,7 @@ const ResetPassword = () =>{
     })
 
     return(
-        <div className="conteiner my-5">
+        <div className="container my-5 mx-auto" style={{width:'65%'}}>
             <div className="card mx-auto">
                 <div className="card-body">
                     <h5 className="text-secondary mb-4">Forgot Password</h5>

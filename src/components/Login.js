@@ -8,7 +8,8 @@ import { useAuth } from "../context/Auth";
 
 const initialValues = {
     email: '',
-    password: ''
+    password: '',
+    loginType: 'user',
 };
 
 const Login = () =>{
@@ -20,23 +21,39 @@ const Login = () =>{
         initialValues: initialValues,
         validationSchema: loginSchema,
         onSubmit: (async (data, action) => {
-            const {email,password} = data;
-            const resp = await post('/auth/login',{email,password});
-            if(resp){
-                console.log(resp);
-                localStorage.setItem('jwtToken',resp.data.authToken);
-                auth.login(resp.data.user);
-                alert('Success');
-                navigate('/dashboard');
+            const {email,password,loginType} = data;
+            try{
+                let resp;
+                if(loginType==='user'){
+                    resp = await post('/auth/login',{email,password});
+                }
+                else{
+                    resp = await post('/admin/login', {email,password});
+                }
+
+                if (resp.status === 200) {
+                    console.log(resp);
+                    localStorage.setItem('jwtToken', resp.data.authToken);
+                    auth.login(resp.data.user);
+                    auth.successToast('Login Success');
+                    if(loginType ==='user')
+                        navigate('/dashboard');
+                    else
+                        navigate('/adminDashboard');
+                    action.resetForm();
+                }     
+                else{
+                    auth.errorToast('Invalid Credentials');
+                }           
             }
-            else{
-                alert('Error occured')
-            }
-            action.resetForm();
+            catch(err){
+                auth.errorToast('Invalid Credentials');
+            }            
         })
     });
 
     return(
+        <>
         <div className="container">
             <div className="card my-5 mx-auto" style={{ width: '80%' }}>
                 <div className="card-body">
@@ -62,15 +79,24 @@ const Login = () =>{
                                 errors.password && touched.password?<p className="form-error text-danger">{errors.password}</p> : null
                             }
                         </div>
+                        <select className="form-select form-select mb-3" aria-label=".form-select-sm example"
+                            value={values.loginType} onChange={handleChange} onBlur={handleBlur}
+                            name="loginType"
+                        >
+                            <option value="user" selected>User</option>
+                            <option value="admin">Admin</option>
+                        </select>
                         <div>
                             <p className="text-secondary">New to Social media <a href="/signup">Signup here</a></p>
                             <p className="text-secondary"><a href="/forgotPassword">Forgot Password</a></p>
                         </div>
+                        
                         <button type="submit" className="btn btn-outline-info mb-3">Login</button>
                     </form>
                 </div>
             </div>
         </div>
+        </>
     );
 }
 
