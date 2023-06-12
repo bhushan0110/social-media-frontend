@@ -36,10 +36,13 @@ const Login = () =>{
                     localStorage.setItem('jwtToken', resp.data.authToken);
                     auth.login(resp.data.user);
                     auth.successToast('Login Success');
+                    console.log(auth.user);
                     if(loginType ==='user')
                         navigate('/dashboard');
-                    else
-                        navigate('/adminDashboard');
+                    else{
+                        auth.setAdmin(true);
+                        navigate('/adminUser');
+                    }
                     action.resetForm();
                 }     
                 else{

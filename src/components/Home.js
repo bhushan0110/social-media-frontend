@@ -38,9 +38,9 @@ const Home = () => {
                 }
                 {
                     (!spinner)&&postData.map((element)=>{
-                        const {id,comments,commentCount,image,isPrivate, like,user,content} = element;
+                        const {id,comments,commentCount,image,isPrivate, like,user,content, userName} = element;
                         return(
-                            <Post id={id} comments={comments} commentCount={commentCount} image={image} isPrivate={isPrivate} content={content} like={like} user={user} deleteButton={false}/>
+                            <Post id={id} comments={comments} commentCount={commentCount} image={image} isPrivate={isPrivate} content={content} like={like} user={user} deleteButton={false} userName={userName}/>
                         );
                     
                     })

@@ -34,9 +34,9 @@ const AdminPost = () => {
             <div className="container mx-5">
                 {
                     postData.map((element)=>{
-                        const {id,comments,commentCount,image,isPrivate, like,user,content} = element;
+                        const {id,comments,commentCount,image,isPrivate, like,user,content,userName} = element;
                         return(
-                            <Post id={id} comments={comments} commentCount={commentCount} image={image} 
+                            <Post id={id} comments={comments} commentCount={commentCount} image={image} userName = {userName}
                                 isPrivate={isPrivate} content={content} like={like} user={user} deleteButton={true}
                                 getData = {getData}     
                             />

@@ -9,12 +9,11 @@ const Post = (props) => {
 
   const auth = useAuth();
 
-  const { id, comments, commentCount, image, like, user, content, deleteButton, getData } = props;
+  const { id, comments, commentCount, image, like, user, content, deleteButton, getData, userName } = props;
   const [likes, setLikes] = useState(like);
   const [liked, setLiked] = useState(false);
   const [mediaData] = useState(image);
   const [showComments, setShowComments] = useState(false);
-  console.log(comments);
 
   const handelCommentClick = () => {
     const tmp = !showComments;
@@ -63,7 +62,7 @@ const Post = (props) => {
             </svg>
           </div>
           <div className='col'>
-            <h5 className="card-title">{user}</h5>
+            <h5 className="card-title">{userName}</h5>
           </div>
         </div>
 
@@ -72,7 +71,7 @@ const Post = (props) => {
             (<img src={mediaData} alt="Media" style={{ width: '100%' }} />) :
             (
               <video controls>
-                <source src={mediaData} type="video/mp4" />
+                <source src={`data:video/mp4;base64,${mediaData}`} type="video/mp4" />
               </video>
             )
         }

@@ -7,9 +7,7 @@ const Modal = ( props ) => {
     const [path] = useState(props.path);
     const [message] = useState(props.message);
     const handelChange = () => {
-        navigate(path);
-        console.log(name,path);
-        console.log(props.name,props.path);
+        navigate(path); 
     };
 
     return(
@@ -18,7 +16,7 @@ const Modal = ( props ) => {
                 {name}
             </button>
 
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
                 <div className="modal-dialog">
                     <div className="modal-content bg-light">
                     <div className="modal-header bg-light">

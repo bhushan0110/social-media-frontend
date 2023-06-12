@@ -32,8 +32,9 @@ export const RequireAuth = ({children}) => {
         }
     }
     
-    if(userAuth()){
-        return <Navigate to='/'/>
+    if(!auth.user){
+        if(userAuth())
+            return <Navigate to='/'/>
     }
 
     return children;

@@ -12,7 +12,6 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Registration from './components/Registration';
 import ResetPassword from './components/ResetPassword';
-import AdminDashboard from './components/AdminDashboard';
 import AdminUser from './components/AdminUser';
 import { AuthProvider } from './context/Auth';
 import { RequireAuth } from './components/RequireAuth';
@@ -25,14 +24,13 @@ function App() {
     <AuthProvider>
       <Router>
         <Navbar/>
-        <div>
+        <div style={{marginTop:'60px'}}>
           <Routes>
             <Route exact path='/dashboard' element={<RequireAuth> <Dashboard/> </RequireAuth>}></Route>
             <Route exact path='/signup' element={<Registration/>}></Route>
             <Route exact path='/' element={<Login/>}></Route>
             <Route exact path='/forgotPassword' element={<ForgotPassword/>}></Route>
             <Route exact path='/resetPassword' element={<ResetPassword/>}></Route>
-            <Route exact path='/adminDashboard' element={<AdminDashboard/> }></Route>
             <Route exact path='/adminUser' element={<AdminUser/>}></Route>
             <Route exact path='/adminPost' element={<AdminPost/>}></Route>
           </Routes>
