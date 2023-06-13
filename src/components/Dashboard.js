@@ -6,6 +6,7 @@ import Friends from "./Friends";
 import Home from "./Home";
 import MyPost from "./MyPost";
 import Trending from "./Trending";
+import EditProfile from "./EditProfile";
 
 
 const Dashboard = () => {
@@ -35,6 +36,9 @@ const Dashboard = () => {
                                 }
                                 {
                                     (component===3)&&<Trending />
+                                }
+                                {
+                                    (component===4)&&<EditProfile/>
                                 }
                             </div>
                         </div>

@@ -24,7 +24,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Navbar/>
-        <div style={{marginTop:'60px'}}>
+        <div>
           <Routes>
             <Route exact path='/dashboard' element={<RequireAuth> <Dashboard/> </RequireAuth>}></Route>
             <Route exact path='/signup' element={<Registration/>}></Route>

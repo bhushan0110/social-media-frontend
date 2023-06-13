@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import Spinner from "./Spinner";
 import Post from './Post';
 
+
 const Trending = () => {
+    const [postData, setPostData] = useState([]);
+    const [spinner,setSpinner] = useState(false);
+
+    const getData = async () => {
+        try {
+            setSpinner(true);
+            const token = localStorage.getItem('jwtToken');
+            const data = await axios.post('http://localhost:5000/postOperation/trendingPost',{},{
+                headers: {
+                    'Content-type': 'application/json',
+                    'auth-token': token,
+                }
+            })
+            if(data){
+                setSpinner(false);
+                setPostData(data.data);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(()=>{
+        getData();
+        // eslint-disable-next-line
+    },[]);
+
     return (
-        <div className="conatiner" style={{display:"flex", justifyContent:'center', alignContent:'center', margin:'auto'}}>
-            <Post/>
+        <div className="container my-3" style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
+            {
+                spinner&&
+                <div style={{marginTop:'70px'}}>
+                    <Spinner size={true}/>
+                </div>
+            }
+            {
+                (!spinner)&&postData.map((element)=>{
+                    return(
+                        <Post element={element} deleteButton={false}/>
+                    )
+                })
+            }
         </div>
     );
 };

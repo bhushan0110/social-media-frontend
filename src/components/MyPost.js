@@ -56,9 +56,8 @@ const MyPost = () => {
             }
             {
                 (!spinner)&&component&& postData.map((element)=>{
-                    const {id,comments,commentCount,image,isPrivate, like,user,content, userName} = element;
                     return(
-                        <Post id={id} userName={userName}  comments={comments} commentCount={commentCount} image={image} isPrivate={isPrivate} content={content} like={like} user={user} deleteButton={true}/>
+                        <Post element={element} deleteButton={true}/>
                     );
                 
                 })

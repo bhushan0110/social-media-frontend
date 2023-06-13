@@ -9,9 +9,11 @@ const Post = (props) => {
 
   const auth = useAuth();
 
-  const { id, comments, commentCount, image, like, user, content, deleteButton, getData, userName } = props;
+  const {deleteButton, getData,element} = props
+  const { id, comments, commentCount, image, like, user, content,  userName, isLiked } = element;
+
   const [likes, setLikes] = useState(like);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(isLiked);
   const [mediaData] = useState(image);
   const [showComments, setShowComments] = useState(false);
 
@@ -20,13 +22,31 @@ const Post = (props) => {
     setShowComments(tmp);
   }
 
-  const handleLike = () => {
-    if (liked) {
-      setLikes(likes - 1);
-      setLiked(false);
-    } else {
-      setLikes(likes + 1);
-      setLiked(true);
+  const handleLike = async () => {
+    let route = '';
+    try{
+      const token = localStorage.getItem('jwtToken');
+      if (liked) {
+        setLikes(likes - 1);
+        setLiked(false);
+        route='dislikePost';
+      } else {
+        setLikes(likes + 1);
+        setLiked(true);
+        route='likePost';
+      }
+
+      const response = await axios.post(`http://localhost:5000/postOperation/${route}`,{postID:id, likeCount:likes},{
+          headers:{
+            'Content-Type': 'application/json',
+            'auth-token': token,
+          }
+        });
+      console.log(response);
+    }
+    catch(err){
+      console.log(err.message);
+
     }
   };
 

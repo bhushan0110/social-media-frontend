@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { useAuth } from "../context/Auth";
 import Post from "./Post";
 import Spinner from "./Spinner";
 
 const Home = () => {
-    const auth = useAuth();
     const [postData, setPostData] = useState([]);
     const [spinner,setSpinner] = useState(false);
 
@@ -18,7 +16,6 @@ const Home = () => {
             'Content-Type': 'application/json',
             'auth-token': token
         }});
-
         setPostData(data.data);
         setSpinner(false);
         console.log(postData);
@@ -26,9 +23,12 @@ const Home = () => {
 
     useEffect(()=>{
         getData();
+        // eslint-disable-next-line
     },[])
 
     return (
+        <div className="mx-4 my-3">
+            <h4>Dashboard</h4>
             <div className="container my-4" style={{display:'flex', alignItems:'center', flexDirection:'column'}}>
                 {
                     (spinner)&&
@@ -38,14 +38,14 @@ const Home = () => {
                 }
                 {
                     (!spinner)&&postData.map((element)=>{
-                        const {id,comments,commentCount,image,isPrivate, like,user,content, userName} = element;
                         return(
-                            <Post id={id} comments={comments} commentCount={commentCount} image={image} isPrivate={isPrivate} content={content} like={like} user={user} deleteButton={false} userName={userName}/>
+                            <Post element={element} deleteButton={false}/>
                         );
                     
                     })
                 }
             </div>
+        </div>
     );
 };
 
