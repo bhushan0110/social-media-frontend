@@ -1,6 +1,10 @@
 import { useFormik } from "formik";
 import React from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import { resetPasswordSchema } from "../schemas";
+import { useAuth } from "../context/Auth";
 
 const initialValues = {
     new_Password: '',
@@ -8,13 +12,33 @@ const initialValues = {
 }
 
 const ResetPassword = () =>{
+    const auth = useAuth();
+    const navigate = useNavigate();
 
     const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: initialValues,
         validationSchema: resetPasswordSchema,
-        onSubmit: ((data,action)=>{
-            console.log(data);
-            action.resetForm();
+        onSubmit: (async (data,action)=>{
+            try{
+                const {new_Password} = data;
+                const token = localStorage.getItem('jwtToken');
+                const response = await axios.post('http://localhost:5000/auth/resetPassword',{password: new_Password},{
+                    headers:{
+                        "Content-Type":'application/json',
+                        'auth-token': token,
+                    }
+                })
+                if(response){
+                    auth.successToast('Password Changed Successfully');
+                    navigate('/dashboard');
+                }
+
+                action.resetForm();
+            }
+            catch(err){
+                console.log(err.message);
+                auth.danger('Error occured');
+            }
         })
     })
 

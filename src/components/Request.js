@@ -1,10 +1,16 @@
 import axios from "axios";
 
 const url = 'http://localhost:5000';
-export const post = async (route,data) =>{
+export const postRequest = async (route,data) =>{
     try{
-        const backend_route = url +route;
-        const success = await axios.post(backend_route,data);
+        const token = localStorage.getItem('jwtToken');
+        const backend_route = url+route;
+        const success = await axios.post(backend_route,data,{
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token':token,
+            }
+        });
         
         if(success)
             return success;
@@ -13,9 +19,22 @@ export const post = async (route,data) =>{
         console.log(err);
         return err;
     }
-}
+};
 
-export const get = async (route) =>{
-    const success = await axios.post(`${url}+${route}`);
-    return success;
-}
+export const getRequest = async (route) =>{
+    try {
+        const token = localStorage.getItem('jwtToken');
+        const backend_route = url+route;
+        const success = await axios.post(backend_route,{
+            headers: {
+                'Content-type': 'application/json',
+                'auth-token': token,
+            }
+        });
+        if(success)
+            return success;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};

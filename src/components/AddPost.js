@@ -35,7 +35,6 @@ const AddPost = ( {component, setComponent}) => {
                 }})
 
                 if(response){
-                    console.log(response);
                     console.log("success");
                     auth.successToast('Post Uploaded');
                     setComponent(!component);

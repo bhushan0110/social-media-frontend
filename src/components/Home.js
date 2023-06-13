@@ -18,7 +18,6 @@ const Home = () => {
         }});
         setPostData(data.data);
         setSpinner(false);
-        console.log(postData);
     }
 
     useEffect(()=>{
@@ -39,7 +38,9 @@ const Home = () => {
                 {
                     (!spinner)&&postData.map((element)=>{
                         return(
-                            <Post element={element} deleteButton={false}/>
+                            <div key={element._id}>
+                                <Post element={element} deleteButton={false}/>
+                            </div>
                         );
                     
                     })

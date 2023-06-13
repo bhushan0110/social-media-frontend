@@ -4,7 +4,7 @@ import { registrationSchema } from "../schemas";
 
 
 // System imports
-import { post } from "./Request";
+import { postRequest } from "./Request";
 
 const initialValues = {
     name: '',
@@ -21,7 +21,7 @@ const Registration = () => {
         validationSchema: registrationSchema,
         onSubmit: (async (data, action) => {
             const {name,email,password,dob} = data;
-            const response = await post('/auth/signup',{name,email,password,dob});
+            const response = await postRequest('/auth/signup',{name,email,password,dob});
             if(response){
                 alert('Success');
             }

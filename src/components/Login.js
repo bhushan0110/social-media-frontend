@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 
 import { loginSchema } from "../schemas";
-import { post } from "./Request";
+import { postRequest } from "./Request";
 import { useAuth } from "../context/Auth";
 
 const initialValues = {
@@ -25,18 +25,16 @@ const Login = () =>{
             try{
                 let resp;
                 if(loginType==='user'){
-                    resp = await post('/auth/login',{email,password});
+                    resp = await postRequest('/auth/login',{email,password});
                 }
                 else{
-                    resp = await post('/admin/login', {email,password});
+                    resp = await postRequest('/admin/login', {email,password});
                 }
 
                 if (resp.status === 200) {
-                    console.log(resp);
                     localStorage.setItem('jwtToken', resp.data.authToken);
                     auth.login(resp.data.user);
                     auth.successToast('Login Success');
-                    console.log(auth.user);
                     if(loginType ==='user')
                         navigate('/dashboard');
                     else{

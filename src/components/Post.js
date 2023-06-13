@@ -36,13 +36,13 @@ const Post = (props) => {
         route='likePost';
       }
 
-      const response = await axios.post(`http://localhost:5000/postOperation/${route}`,{postID:id, likeCount:likes},{
+      await axios.post(`http://localhost:5000/postOperation/${route}`,{postID:id, likeCount:likes},{
           headers:{
             'Content-Type': 'application/json',
             'auth-token': token,
           }
-        });
-      console.log(response);
+      });
+
     }
     catch(err){
       console.log(err.message);

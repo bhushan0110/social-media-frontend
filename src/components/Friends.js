@@ -47,7 +47,6 @@ const Friends = () => {
                 setNewFriends(response.data);
                 setSpinner1(false);
                 auth.infoToast('Add new friends');
-                console.log(newFriends);
                 
             }
             setClicked(true);
@@ -69,7 +68,6 @@ const Friends = () => {
             if(data){
                 setMyFriends(data.data);
                 setSpinner2(false);
-                console.log(myFriends);
             }
         }   
         catch(err){

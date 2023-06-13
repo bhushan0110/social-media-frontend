@@ -6,10 +6,10 @@ const Spinner = ({size}) =>{
     return(
         <>
             {
-                size&& <img src={gif}/>
+                size&& <img src={gif} alt="hi"/>
             }
             {
-                (!size)&& <img src={smallGif}/>
+                (!size)&& <img src={smallGif} alt="hi"/>
             }
         </>
     );

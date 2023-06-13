@@ -14,7 +14,7 @@ import Registration from './components/Registration';
 import ResetPassword from './components/ResetPassword';
 import AdminUser from './components/AdminUser';
 import { AuthProvider } from './context/Auth';
-import { RequireAuth } from './components/RequireAuth';
+import { RequireAuth } from './Utility/RequireAuth';
 import AdminPost from './components/AdminPost';
 
 
@@ -27,7 +27,7 @@ function App() {
         <div>
           <Routes>
             <Route exact path='/dashboard' element={<RequireAuth> <Dashboard/> </RequireAuth>}></Route>
-            <Route exact path='/signup' element={<Registration/>}></Route>
+            <Route exact path='/signup' element={<RequireAuth> <Registration/> </RequireAuth>}></Route>
             <Route exact path='/' element={<Login/>}></Route>
             <Route exact path='/forgotPassword' element={<ForgotPassword/>}></Route>
             <Route exact path='/resetPassword' element={<ResetPassword/>}></Route>

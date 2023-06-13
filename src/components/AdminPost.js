@@ -8,7 +8,6 @@ const AdminPost = () => {
     const getData = async () =>{
         try{
             const token = localStorage.getItem('jwtToken');
-            console.log(token);
             const data = await axios.get('http://localhost:5000/postOperation/postDataAdmin',{
                 headers:{
                     'Content-Type':'application/json',

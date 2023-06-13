@@ -19,7 +19,7 @@ export const AuthProvider = ({children}) =>{
     const successToast = (message) =>{
         toast.success(message, {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -32,7 +32,7 @@ export const AuthProvider = ({children}) =>{
     const errorToast = (message) =>{
         toast.error(message, {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -45,7 +45,7 @@ export const AuthProvider = ({children}) =>{
     const warningToast = (message) => {
         toast.warn(message, {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -58,7 +58,7 @@ export const AuthProvider = ({children}) =>{
     const infoToast = (message) => {
         toast.info(message, {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -68,29 +68,6 @@ export const AuthProvider = ({children}) =>{
             });
     }
 
-    // const setUserData = async () =>{
-    //     const token = localStorage.getItem('jwtToken');
-    //     try{
-    //         const data = await axios.get('http://localhost:5000/auth/getUserDetails',{
-    //             headers:{
-    //                 "Content-Type": "application/json",
-    //                 'auth-token': token,
-    //             }
-    //         });
-
-    //         if(data){
-    //             console.log(data);
-    //             login(data.data);
-    //         }
-    //     }
-    //     catch(err){
-    //         console.log(err);
-    //     }
-    // }
-
-    // useEffect(()=>{
-    //     setUserData();
-    // },[]);
 
     return (
         <AuthContext.Provider  value={{user,isAdmin, setAdmin,login,logout,successToast,errorToast, warningToast, infoToast}} >

@@ -20,7 +20,6 @@ const MyPost = () => {
 
         setPostData(data.data);
         setSpinner(false);
-        console.log(postData);
     }
 
     const handelClick = () => {

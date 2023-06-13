@@ -1,6 +1,10 @@
 import React from "react";
 import { useFormik } from "formik";
+import axios from "axios";
+
+
 import { forgotPasswordSchema } from "../schemas";
+import { useAuth } from "../context/Auth";
 
 const initialValues = {
     email: ''
@@ -8,11 +12,30 @@ const initialValues = {
 
 const ForgotPassword = () =>{
 
+    const auth = useAuth();
+
     const { values, errors,touched,handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: initialValues,
         validationSchema: forgotPasswordSchema,
-        onSubmit: ((data, action)=>{
-            console.log(data);
+        onSubmit: (async (data, action)=>{
+            const {email} = data;
+            try{
+                const token = localStorage.getItem('jwtToken'); 
+                const response = await axios.post('http://localhost:5000/auth/forgortPassword',{email:email},{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': token
+                    }
+                });
+
+                if(response){
+                    auth.infoToast('Check your registered email');
+                }
+            }
+            catch(err){
+                console.log(err);
+                auth.dangerToast('Some error occured');
+            }
             action.resetForm();
         })
     });

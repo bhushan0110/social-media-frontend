@@ -34,7 +34,6 @@ const AdminUser = () =>{
 
             const token = localStorage.getItem('jwtToken');
             const url = `http://localhost:5000/admin/changeUserState`;
-            console.log(token);
             const response = await axios.post(url,{userID:_id, status:(!status)},{
                 headers: {
                     'Content-Type':'application/json',

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Routes, Route } from "react-router-dom";
 
 import Profile from "./Profile";
 import Friends from "./Friends";
@@ -9,13 +9,14 @@ import Trending from "./Trending";
 import EditProfile from "./EditProfile";
 
 
+
 const Dashboard = () => {
 
     const [component,setComponent] = useState(0);
     
 
     return(
-            <>
+            <div className="row">
                 <div className="row" style={{width:'100%'}}>
                     <div className="col-md-3" style={{height: '100vh', alignContent:'center'}}>
                         <div style={{padding:'10px'}}>
@@ -44,7 +45,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-            </>
+            </div>
     );
 };
 

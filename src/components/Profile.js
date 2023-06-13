@@ -9,7 +9,6 @@ const Profile = (props) => {
     
     const [user] = useState(auth.user);
     const [date] = useState(new Date(user.dob).toLocaleDateString());
-    console.log(user);
     const {setComponent} = props;
     const handelClick = (e) =>{
         setComponent(parseInt(e.target.id));
@@ -62,6 +61,9 @@ const Profile = (props) => {
                             <p style={{margin: '0',padding:'0'}}> Trending Post </p>
                         </div>
                     </li>
+                    {/* <li>
+                        <Link className="nav-link active" to='/myPost'>Hiiii</Link>
+                    </li> */}
                 </ul>
 
                 <div className="container mx-2"  onClick={handelClick} style={{marginTop: '30px'}}>
