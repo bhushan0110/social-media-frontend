@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../context/Auth';
+
 const Modal = ( props ) => {
+
+    const auth = useAuth();
     const navigate = useNavigate();
+
     const [name] = useState(props.name);
     const [path] = useState(props.path);
     const [message] = useState(props.message);
     const handelChange = () => {
         navigate(path); 
+        localStorage.removeItem('jwtToken');
+        auth.logout();
+        auth.setAdmin(false);
     };
 
     return(

@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { loginSchema } from "../schemas";
 import { postRequest } from "./Request";
@@ -88,7 +89,7 @@ const Login = () =>{
                             <option value="admin">Admin</option>
                         </select>
                         <div>
-                            <p className="text-secondary">New to Social media <a href="/signup">Signup here</a></p>
+                            <p className="text-secondary">New to Social media <Link to="/signup">Signup here</Link></p>
                             <p className="text-secondary"><a href="/forgotPassword">Forgot Password</a></p>
                         </div>
                         

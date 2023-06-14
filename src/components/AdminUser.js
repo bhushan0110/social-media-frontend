@@ -6,9 +6,8 @@ import {useAuth} from '../context/Auth';
 const AdminUser = () =>{
 
     const [users,setUser] = useState([]);
-    const [refresh, setRefresh] = useState(false);
     const auth = useAuth();
-
+    
     const getUserData = async () =>{
         try{
             const token = localStorage.getItem('jwtToken');
@@ -21,7 +20,6 @@ const AdminUser = () =>{
 
             if(response){
                 setUser(response.data);
-                setRefresh((!refresh));
             }
         }
         catch(err){
@@ -44,6 +42,8 @@ const AdminUser = () =>{
             if(response){
                 if(status === true) auth.warningToast(`${name} Disabled`);
                 else auth.infoToast(`${name} Enabled`);
+
+                getUserData();
             }
         }
         catch(err){
@@ -54,7 +54,7 @@ const AdminUser = () =>{
     useEffect(()=>{
         getUserData();
         // eslint-disable-next-line
-    },[refresh]);
+    },[]);
 
     return(
         <div className="container my-4 ">

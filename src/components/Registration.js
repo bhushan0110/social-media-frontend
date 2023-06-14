@@ -1,10 +1,12 @@
 import React from "react";
 import { useFormik } from "formik";
-import { registrationSchema } from "../schemas";
-
 
 // System imports
 import { postRequest } from "./Request";
+import { registrationSchema } from "../schemas";
+import { useAuth } from "../context/Auth";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const initialValues = {
     name: '',
@@ -16,19 +18,42 @@ const initialValues = {
 
 const Registration = () => {
 
+    const auth = useAuth();
+    const navigate = useNavigate();
+
     const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
         initialValues: initialValues,
         validationSchema: registrationSchema,
         onSubmit: (async (data, action) => {
-            const {name,email,password,dob} = data;
-            const response = await postRequest('/auth/signup',{name,email,password,dob});
-            if(response){
-                alert('Success');
+            try{
+                const {name,email,password,dob} = data;
+                const response = await postRequest('/auth/signup',{name,email,password,dob});
+                if(!response){
+                    console.log(response);
+                    auth.dangerToast('Error occured');
+                }
+
+                const id = response.data.save._id;
+                const nm = response.data.save.name;
+                const em = response.data.save.email;
+                
+                const createRequest  = await axios.post('http://localhost:5000/admin/createAccRequest',{id:id,name:nm, email:em},{
+                    headers:{
+                        'Content-type':'application/json'
+                    }
+                });
+
+                if(createRequest){
+                    auth.successToast('Account Created');
+                    navigate('/');
+                }
+
+                action.resetForm();
             }
-            else{
-                alert('Error occured')
+            catch(err){
+                console.log(err.message);
+                auth.dangerToast('Error occured');
             }
-            action.resetForm();
         })
     });
 

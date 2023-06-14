@@ -10,6 +10,12 @@ export const registrationSchema = Yup.object({
     dob: Yup.date().required('Please select your Birth date'),
 });
 
+export const editProfileSchema = Yup.object({
+    name: Yup.string().min(2).max(25).required("Please enter your name"),
+    email: Yup.string().email().required("Please enter you email"),
+    dob: Yup.date().required('Please select your Birth date'),
+}); 
+
 
 export const loginSchema = Yup.object({
     email: Yup.string().email().required("Please enter you email"),
