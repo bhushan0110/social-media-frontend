@@ -16,7 +16,7 @@ const FriendComponent = ( props ) => {
 
             if(addFriend){
                 handelRefresh();
-                auth.successToast('Friend Added');
+                auth.successToast('Friend Request Sent');
             }
         }
         catch(err){

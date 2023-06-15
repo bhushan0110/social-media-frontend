@@ -6,6 +6,7 @@ import Home from "./Home";
 import MyPost from "./MyPost";
 import Trending from "./Trending";
 import EditProfile from "./EditProfile";
+import FriendRequests from "./FriendRequests";
 
 
 
@@ -39,6 +40,9 @@ const Dashboard = () => {
                                 }
                                 {
                                     (component===4)&&<EditProfile/>
+                                }
+                                {
+                                    (component===5) && <FriendRequests/>
                                 }
                             </div>
                         </div>

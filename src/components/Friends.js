@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import axios from "axios";
 
 
 import Spinner from "./Spinner";
@@ -42,7 +41,6 @@ const Friends = () => {
                 if(response.request.status===200){
                     setNewFriends(response.data);
                     setSpinner1(false);
-                    auth.infoToast('Add new friends');
                 }
                 setClicked(true);
                 action.resetForm();

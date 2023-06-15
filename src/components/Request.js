@@ -25,7 +25,6 @@ export const postRequest = async (route,data) =>{
 export const getRequest = async (route) =>{
     try {
         const backend_route = url+route;
-        console.log(backend_route);
         const success = await axios.get(backend_route,{
             headers: {
                 'Content-type': 'application/json',
