@@ -1,10 +1,10 @@
 import React from "react";
 import { useFormik } from "formik";
-import axios from "axios";
 
 
 import { addPostSchema } from "../schemas";
 import { useAuth } from "../context/Auth";
+import { postMediaRequest, postRequest } from "./Request";
 
 const initialValues = {
     description: '',
@@ -29,12 +29,8 @@ const AddPost = ( {component, setComponent}) => {
 
             try{
                 const token = localStorage.getItem('jwtToken');
-                const response = await axios.post('http://localhost:5000/postOperation/addPost',formData,{headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'auth-token': token
-                }})
-
-                if(response){
+                const response = await postMediaRequest('/postOperation/addPost',formData);
+                if(response.request.status===200){
                     console.log("success");
                     auth.successToast('Post Uploaded');
                     setComponent(!component);

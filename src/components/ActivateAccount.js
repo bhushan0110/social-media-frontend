@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import { useAuth } from "../context/Auth";
+import { postRequest, getRequest } from "./Request";
 
 const ActivateAccount = () => {
 
@@ -9,15 +9,9 @@ const ActivateAccount = () => {
 
     const [requests, setRequests] = useState([]);
 
-    const getRequests = async () => {
+    const getActivateRequests = async () => {
         try{
-            const token = localStorage.getItem('jwtToken');
-            const response = await axios.get('http://localhost:5000/admin/accountRequest',{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': token,
-                }
-            })
+            const response = await getRequest('/admin/accountRequest');
 
             if(response){
                 console.log(response.data);
@@ -32,17 +26,11 @@ const ActivateAccount = () => {
 
     const handelActivate = async (id,name) =>{
         try{
-            const token = localStorage.getItem('jwtToken');
-            const activate = await axios.post('http://localhost:5000/admin/activateAccount',{id}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': token,
-                }
-            });
+            const activate = await postRequest('/admin/activateAccount',{id});
 
             if(activate){
                 auth.infoToast(`${name}'s Account Activated`);
-                getRequests();
+                getActivateRequests();
             }
         }
         catch(err){
@@ -51,7 +39,7 @@ const ActivateAccount = () => {
     };
 
     useEffect(()=>{
-        getRequests();
+        getActivateRequests();
         // eslint-disable-next-line
     },[]);
 

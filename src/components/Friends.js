@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 
-import { searchFriendSchema } from "../schemas";
-import FriendComponent from "./FriendComponent";
-import { useAuth } from "../context/Auth";
+
 import Spinner from "./Spinner";
+import FriendComponent from "./FriendComponent";
+import { searchFriendSchema } from "../schemas";
+import { useAuth } from "../context/Auth";
+import { getRequest, postRequest } from "./Request";
 
 const initialValues = {
     userName: ''
@@ -33,37 +35,29 @@ const Friends = () => {
         initialValues: initialValues,
         validationSchema: searchFriendSchema,
         onSubmit: (async (data, action)=> {
-            setSpinner1(true);
-            const { userName } = data;
-            const token = localStorage.getItem('jwtToken');
-            const response = await axios.post('http://localhost:5000/friends/searchFriend',{userName},{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'auth-token': token
+            try{
+                setSpinner1(true);
+                const { userName } = data;
+                const response = await postRequest('/friends/searchFriend',{userName});
+                if(response.request.status===200){
+                    setNewFriends(response.data);
+                    setSpinner1(false);
+                    auth.infoToast('Add new friends');
                 }
-            });
-
-            if(response){
-                setNewFriends(response.data);
-                setSpinner1(false);
-                auth.infoToast('Add new friends');
-                
+                setClicked(true);
+                action.resetForm();
             }
-            setClicked(true);
-            action.resetForm();
+            catch(err){
+                console.log(err.message);
+                auth.danger('Error occured');
+            }
         })
     });
 
     const getMyFriends= async ()=>{
         try{
             setSpinner2(true);
-            const token = localStorage.getItem('jwtToken');
-            const data = await axios.get('http://localhost:5000/friends/getMyFriends',{
-                headers:{
-                    'Content-Type':'application/json',
-                    'auth-token': token
-                }
-            });
+            const data = await getRequest('/friends/getMyFriends');
 
             if(data){
                 setMyFriends(data.data);
@@ -129,7 +123,7 @@ const Friends = () => {
                     })
                 }
                 {
-                    (!spinner2)&&(myFriends.length==0) &&
+                    (!spinner2)&&(myFriends.length===0) &&
                     <p className="text-warning">Search for new friends</p>
                 }
             </div>

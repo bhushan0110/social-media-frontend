@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-
 
 import Comments from './Comments';
 import { useAuth } from '../context/Auth';
+import { postRequest } from './Request';
 
 const Post = (props) => {
 
@@ -25,23 +24,17 @@ const Post = (props) => {
   const handleLike = async () => {
     let route = '';
     try{
-      const token = localStorage.getItem('jwtToken');
       if (liked) {
         setLikes(likes - 1);
         setLiked(false);
-        route='dislikePost';
+        route='unlikePost';
       } else {
         setLikes(likes + 1);
         setLiked(true);
         route='likePost';
       }
 
-      await axios.post(`http://localhost:5000/postOperation/${route}`,{postID:id, likeCount:likes},{
-          headers:{
-            'Content-Type': 'application/json',
-            'auth-token': token,
-          }
-      });
+      await postRequest(`/postOperation/${route}`,{postID:id, likeCount:likes});
 
     }
     catch(err){
@@ -52,18 +45,10 @@ const Post = (props) => {
 
   const handelDeletPost = async () => {
     try{
-      const token = localStorage.getItem('jwtToken');
-      const deletePost = await axios.post('http://localhost:5000/postOperation/deletePost',{postID:id},{
-        headers:{
-          'Content-Type':'application/json',
-          'auth-token':token
-        }
-      });
+      const deletePost = await postRequest('/postOperation/deletePost',{postID:id});
 
       if(deletePost){
-        getData();
         auth.successToast('Post deleted');
-
       }
     }
     catch(err){

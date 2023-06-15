@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
 import Post from "./Post";
 import Spinner from "./Spinner";
+import { getRequest } from "./Request";
 
 const Home = () => {
     const [postData, setPostData] = useState([]);
@@ -11,11 +11,7 @@ const Home = () => {
 
     const getData = async () =>{
         setSpinner(true);
-        const token = localStorage.getItem('jwtToken');
-        const data = await axios.get('http://localhost:5000/postOperation/getDashboardPost', {headers: {
-            'Content-Type': 'application/json',
-            'auth-token': token
-        }});
+        const data = await getRequest('/postOperation/getDashboardPost');
         setPostData(data.data);
         setSpinner(false);
     }

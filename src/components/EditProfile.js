@@ -1,9 +1,9 @@
 import React from "react";
+import { useFormik } from "formik";
 
 import { useAuth } from "../context/Auth";
-import { useFormik } from "formik";
 import { editProfileSchema } from "../schemas";
-import axios from "axios";
+import { postRequest } from "./Request";
 
 
 const EditProfile = () => {
@@ -21,17 +21,10 @@ const EditProfile = () => {
         validationSchema: editProfileSchema,
         onSubmit: (async (data,action) =>{
             try {
-                const token = localStorage.getItem('jwtToken');
                 const {name,email,dob} = data;
-                const update = await axios.post('http://localhost:5000/auth/editProfile',{name,email,dob},{
-                    headers:{
-                        'Content-Type':'application/json',
-                        'auth-token': token,
-                    }
-                });
-                if(update){
+                const update = await postRequest('/auth/editProfile',{name,email,dob});
+                if(update.request.status===200){
                     auth.successToast('Profile Updated');
-                    
                     action.resetForm();
                 }
             } catch (error) {

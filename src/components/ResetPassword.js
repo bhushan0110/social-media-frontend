@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
 import React from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { resetPasswordSchema } from "../schemas";
 import { useAuth } from "../context/Auth";
+import { postRequest } from "./Request";
 
 const initialValues = {
     new_Password: '',
@@ -21,16 +21,13 @@ const ResetPassword = () =>{
         onSubmit: (async (data,action)=>{
             try{
                 const {new_Password} = data;
-                const token = localStorage.getItem('jwtToken');
-                const response = await axios.post('http://localhost:5000/auth/resetPassword',{password: new_Password},{
-                    headers:{
-                        "Content-Type":'application/json',
-                        'auth-token': token,
-                    }
-                })
-                if(response){
+                const response = await postRequest('/auth/resetPassword',{password: new_Password});
+                if(response.request.status===200){
                     auth.successToast('Password Changed Successfully');
                     navigate('/dashboard');
+                }
+                else{
+                    auth.errorToast('Some error occured');
                 }
 
                 action.resetForm();
@@ -46,7 +43,7 @@ const ResetPassword = () =>{
         <div className="container my-5 mx-auto" style={{width:'65%'}}>
             <div className="card mx-auto">
                 <div className="card-body">
-                    <h5 className="text-secondary mb-4">Forgot Password</h5>
+                    <h5 className="text-secondary mb-4">Reset Password</h5>
                     <form onSubmit={handleSubmit}>
                         <div className="form-floating mb-3">
                             <input type="password" className="form-control" 

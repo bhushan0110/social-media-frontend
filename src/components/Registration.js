@@ -6,7 +6,6 @@ import { postRequest } from "./Request";
 import { registrationSchema } from "../schemas";
 import { useAuth } from "../context/Auth";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const initialValues = {
     name: '',
@@ -37,11 +36,7 @@ const Registration = () => {
                 const nm = response.data.save.name;
                 const em = response.data.save.email;
                 
-                const createRequest  = await axios.post('http://localhost:5000/admin/createAccRequest',{id:id,name:nm, email:em},{
-                    headers:{
-                        'Content-type':'application/json'
-                    }
-                });
+                const createRequest  = await postRequest('/admin/createAccRequest',{id:id,name:nm, email:em});
 
                 if(createRequest){
                     auth.successToast('Account Created');

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import image from '../images/boy.png'
-import axios from "axios";
 
 import { useAuth } from "../context/Auth";
- 
+import { postRequest } from './Request'; 
+
 const FriendComponent = ( props ) => {
     const auth = useAuth();
     const {name, _id  ,isFriend, handelRefresh} = props;
@@ -12,12 +12,7 @@ const FriendComponent = ( props ) => {
 
     const handelClick = async () => {
         try{
-            const token = localStorage.getItem('jwtToken');
-
-            const addFriend  = await axios.post('http://localhost:5000/friends/addFriend', {friendID: id} ,{headers: {
-                'Content-Type': 'application/json',
-                'auth-token': token
-            }});
+            const addFriend  = await postRequest('/friends/addFriend', {friendID: id} );
 
             if(addFriend){
                 handelRefresh();
@@ -31,18 +26,12 @@ const FriendComponent = ( props ) => {
 
     const handelDelete = async () => {
         try{
-            const token = localStorage.getItem('jwtToken');
 
-            const delFriend = await axios.post('http://localhost:5000/friends/removeFriend', {friendID: id},{
-                headers: {
-                'Content-Type': 'application/json',
-                'auth-token': token
-            }
-            })
+            const delFriend = await postRequest('/friends/removeFriend', {friendID: id});
 
             if(delFriend){
                 auth.infoToast('Friend Removed');
-                handelRefresh();
+                // handelRefresh();
             }
         }
         catch(err){

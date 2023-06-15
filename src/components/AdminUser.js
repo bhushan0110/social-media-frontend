@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
 import {useAuth} from '../context/Auth';
+import { getRequest, postRequest } from "./Request";
 
 const AdminUser = () =>{
 
@@ -10,13 +10,7 @@ const AdminUser = () =>{
     
     const getUserData = async () =>{
         try{
-            const token = localStorage.getItem('jwtToken');
-            const response = await axios.get('http://localhost:5000/admin/userData',{
-                headers:{
-                    "Content-Type": 'application/json',
-                    "auth-token" : token
-                }
-            });
+            const response = await  getRequest('/admin/userData');
 
             if(response){
                 setUser(response.data);
@@ -30,15 +24,9 @@ const AdminUser = () =>{
     const handelChangeState = async (_id,name,status) =>{
         try{
 
-            const token = localStorage.getItem('jwtToken');
-            const url = `http://localhost:5000/admin/changeUserState`;
-            const response = await axios.post(url,{userID:_id, status:(!status)},{
-                headers: {
-                    'Content-Type':'application/json',
-                    'auth-token': token
-                }
-            });
-
+            const url = `/admin/changeUserState`;
+            const response = await postRequest(url,{userID:_id, status:(!status)});
+            
             if(response){
                 if(status === true) auth.warningToast(`${name} Disabled`);
                 else auth.infoToast(`${name} Enabled`);

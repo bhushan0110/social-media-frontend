@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import axios from "axios";
 
 
 import { commentSchema } from "../schemas";
 import { useAuth } from "../context/Auth";
+import { postRequest } from "./Request";
 
 const initialValues = {
     comment : '',
@@ -21,15 +21,8 @@ const Comments = ( props ) =>{
         validationSchema: commentSchema,
         onSubmit: (async (data, action) => {
             try{
-                const token = localStorage.getItem('jwtToken');
-                const postComment = await axios.post('http://localhost:5000/postOperation/addComment',
-                    {postID:id, commentCount:(commentCount+1),  comment: data.comment},
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'auth-token': token
-                        }
-                })
+                const postComment = await postRequest('/postOperation/addComment',
+                    {postID:id, commentCount:(commentCount+1),  comment: data.comment});
 
                 if(postComment){
                     auth.successToast('Commented');

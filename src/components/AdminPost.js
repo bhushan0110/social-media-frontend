@@ -1,22 +1,14 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Post from "./Post";
+import { getRequest } from "./Request";
 
 const AdminPost = () => {
     const [postData, setPostData] = useState([]);
 
     const getData = async () =>{
         try{
-            const token = localStorage.getItem('jwtToken');
-            const data = await axios.get('http://localhost:5000/postOperation/postDataAdmin',{
-                headers:{
-                    'Content-Type':'application/json',
-                    'auth-token':token,
-                }
-            });
-
+            const data = await getRequest('/postOperation/postDataAdmin');
             setPostData(data.data);
-            
         }
         catch(err){
             console.log(err.message);
