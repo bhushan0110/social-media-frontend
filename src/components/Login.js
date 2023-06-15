@@ -10,7 +10,6 @@ import { useAuth } from "../context/Auth";
 const initialValues = {
     email: '',
     password: '',
-    loginType: 'user',
 };
 
 const Login = () =>{
@@ -22,21 +21,15 @@ const Login = () =>{
         initialValues: initialValues,
         validationSchema: loginSchema,
         onSubmit: (async (data, action) => {
-            const {email,password,loginType} = data;
+            const {email,password} = data;
             try{
-                let resp;
-                if(loginType==='user'){
-                    resp = await postRequest('/auth/login',{email,password});
-                }
-                else{
-                    resp = await postRequest('/admin/login', {email,password});
-                }
-
+                const resp = await postRequest('/auth/login',{email,password});
+                console.log(resp);
                 if (resp.status === 200) {
                     localStorage.setItem('jwtToken', resp.data.authToken);
-                    auth.login(resp.data.user);
+                    auth.login(resp.data.require);
                     auth.successToast('Login Success');
-                    if(loginType ==='user')
+                    if(resp.data.isAdmin === false)
                         navigate('/dashboard');
                     else{
                         auth.setAdmin(true);
@@ -81,13 +74,6 @@ const Login = () =>{
                                 errors.password && touched.password?<p className="form-error text-danger">{errors.password}</p> : null
                             }
                         </div>
-                        <select className="form-select form-select mb-3" aria-label=".form-select-sm example"
-                            value={values.loginType} onChange={handleChange} onBlur={handleBlur}
-                            name="loginType"
-                        >
-                            <option value="user" selected>User</option>
-                            <option value="admin">Admin</option>
-                        </select>
                         <div>
                             <p className="text-secondary">New to Social media <Link to="/signup">Signup here</Link></p>
                             <p className="text-secondary"><a href="/forgotPassword">Forgot Password</a></p>
