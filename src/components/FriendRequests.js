@@ -11,7 +11,7 @@ const FriendRequests = () => {
     const getData = async () =>{
         try{
             const response = await getRequest('/friends/friendRequests');
-
+            console.log(response);
             if(response){
                 setRequests(response.data);
             }

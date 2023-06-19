@@ -10,10 +10,15 @@ const Home = () => {
 
 
     const getData = async () =>{
-        setSpinner(true);
-        const data = await getRequest('/postOperation/getDashboardPost');
-        setPostData(data.data);
-        setSpinner(false);
+        try{
+            setSpinner(true);
+            const data = await getRequest('/postOperation/getDashboardPost');
+            setPostData(data.data);
+            setSpinner(false);
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 
     useEffect(()=>{
@@ -32,7 +37,7 @@ const Home = () => {
                     </div>
                 }
                 {
-                    (!spinner)&&postData.map((element)=>{
+                    (postData.length>0)&&(!spinner)&&postData.map((element)=>{
                         return(
                             <div key={element._id}>
                                 <Post element={element} deleteButton={false}/>
