@@ -23,22 +23,22 @@ import ActivateAccount from './components/ActivateAccount';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Navbar/>
-        <div>
-          <Routes>
-            <Route exact path='/dashboard' element={<RequireAuth> <Dashboard/> </RequireAuth>}></Route>
-            <Route exact path='/signup' element={<Registration/>}></Route>
-            <Route exact path='/' element={<Login/>}></Route>
-            <Route exact path='/forgotPassword' element={<ForgotPassword/>}></Route>
-            <Route exact path='/resetPassword' element={<ResetPassword/>}></Route>
+        <Router>
+          <Navbar/>
+          <div>
+            <Routes>
+              <Route exact path='/dashboard' element={<RequireAuth> <Dashboard/> </RequireAuth>}></Route>
+              <Route exact path='/signup' element={<Registration/>}></Route>
+              <Route exact path='/' element={<Login/>}></Route>
+              <Route exact path='/forgotPassword' element={<ForgotPassword/>}></Route>
+              <Route exact path='/resetPassword' element={<ResetPassword/>}></Route>
             <Route exact path='/adminUser' element={<AdminUser/>}></Route>
-            <Route exact path='/adminPost' element={<AdminPost/>}></Route>
-            <Route exact path='/adminRequest' element={<ActivateAccount/>}></Route>
-          </Routes>
-        </div>
-        <ToastContainer/>
-      </Router>
+              <Route exact path='/adminPost' element={<AdminPost/>}></Route>
+              <Route exact path='/adminRequest' element={<ActivateAccount/>}></Route>
+            </Routes>
+          </div>
+          <ToastContainer/>
+        </Router>
     </AuthProvider>
   );
 }

@@ -49,6 +49,7 @@ const Post = (props) => {
 
       if(deletePost){
         auth.successToast('Post deleted');
+        getData();
       }
     }
     catch(err){
